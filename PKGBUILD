@@ -1,0 +1,28 @@
+# Maintainer: Hugo Osvaldo Barrera <hugo@barrera.io>
+# Contributor: Matthias Maennich <arch@maennich.net>
+# Contributor: Massimiliano Torromeo <massimiliano.torromeo@gmail.com>
+
+pkgname=generatorrunner
+pkgver=0.6.16
+pkgrel=2
+pkgdesc="A binding generator"
+arch=('i686' 'x86_64')
+license=('LGPL')
+url="http://www.pyside.org"
+depends=('apiextractor>=0.10.10' 'qt4>=4.8' 'openssl')
+makedepends=('cmake' 'automoc4')
+optdepends=("python2-sphinx: Documentation")
+source=("https://distfiles.macports.org/generatorrunner/$pkgname-$pkgver.tar.bz2")
+md5sums=('c7011b8ee08e228779a769b7cfa90f5f')
+
+build(){
+    cd $srcdir/$pkgname-$pkgver
+    mkdir -p build && cd build
+    cmake ../ -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake-qt4
+    make
+}
+
+package(){
+    cd $srcdir/$pkgname-$pkgver/build
+    make DESTDIR=$pkgdir install
+}
